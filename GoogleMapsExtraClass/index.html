@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 90%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <button onClick="showDistance();">show distance</button>
+
+    <script>
+      var map;
+
+      var yoobee = {
+      	lat: -41.279178,
+      	lng: 174.780331
+      }
+
+      var auckland = {
+      	lat: -36.8626926,
+      	lng: 174.5845695
+      }
+
+var distance;
+var duration;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: yoobee,
+          zoom: 8
+        });
+      }
+
+      function showDistance(){
+      	var service = new google.maps.DistanceMatrixService();
+      	service.getDistanceMatrix(
+		  {
+		    origins: [yoobee],
+		    destinations: [auckland],
+		    travelMode: 'DRIVING',
+		  }, callback);
+
+		function callback(response, status) {
+			console.log(response);
+			distance = response.rows[0].elements[0].distance.text;
+			duration = response.rows[0].elements[0].duration.text;
+
+			console.log(parseInt(distance) * 10);
+			console.log(duration)
+		}
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOURAPIKEY&callback=initMap"
+    async defer></script>
+  </body>
+</html>
